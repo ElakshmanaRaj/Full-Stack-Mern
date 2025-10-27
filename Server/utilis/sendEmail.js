@@ -30,7 +30,7 @@ const sendMail = async (to, subject, text) => {
         if (error.response) {
             console.error("SMTP Response:", error.response);
         }
-        throw new Error("Email not sent");
+        throw new Error("Error sending email to check otp", error);
     }
 }
 
