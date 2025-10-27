@@ -69,7 +69,7 @@ const LogIn = () => {
 
       setMessage(res.data.success);
       setTimeout(() => {
-        navigate(-1);
+        navigate("/");
       }, 2000);
       toast.success(res.data.success, {
         className:"custom-toast",
