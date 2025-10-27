@@ -1,5 +1,5 @@
 
-export const BASE_URL = "https://full-stack-mern-04gn.onrender.com"
+export const BASE_URL = "http://localhost:8000"
 
 
 export const API_PATHS = {
