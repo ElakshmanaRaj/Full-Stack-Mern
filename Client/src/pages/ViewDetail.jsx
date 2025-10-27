@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { API_PATHS, BASE_URL } from '../utilis/apiPath';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
@@ -12,6 +12,12 @@ const ViewDetail = () => {
     const[product, setProduct] = useState(null);
     const[loading, setLoading] = useState(true);
     const dispatch = useDispatch();
+    const { path } = useLocation();
+
+
+    useEffect(()=>{
+      window.scroll({top: 0, left: 0, behavior:"smooth"});
+    },[path]);
 
 
     const getProduct = async () => {
