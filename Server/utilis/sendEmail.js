@@ -1,37 +1,33 @@
-
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465, 
-    secure: true, 
-    auth: {
-      user: process.env.EMAIL_USER, 
-      pass: process.env.EMAIL_PASS, 
-    },
-    tls: {
-      rejectUnauthorized: false, 
-    },
-    family: 4, 
+  service: "gmail",
+  host: "smtp.ethereal.email",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS, 
+  },
 });
 
 const sendMail = async (to, subject, text) => {
-    try {
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to,
-            subject,
-            text
-        };
-        await transporter.sendMail(mailOptions);
+  try {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to,
+      subject,
+      text,
+    };
 
-    } catch (error) {
-        console.error("Error sending email:", error); 
-        if (error.response) {
-            console.error("SMTP Response:", error.response);
-        }
-        throw new Error("Error sending email to check otp", error);
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully!");
+  } catch (error) {
+    console.error("error sending email to verify otp:", error.message);
+    if (error.response) {
+      console.error("SMTP Response:", error.response);
     }
-}
+  }
+};
 
 module.exports = sendMail;
