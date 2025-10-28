@@ -16,8 +16,7 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/products", express.static(path.join(__dirname, "products")));
+
 
 // cors handler
 app.use(cors({
