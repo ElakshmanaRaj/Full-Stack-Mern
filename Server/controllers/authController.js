@@ -3,6 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utilis/sendEmail");
+const cloudinary = require("cloudinary").v2;
 
 
 const JWT = process.env.JWT_SECRET
@@ -23,9 +24,14 @@ const registerUser = async (req, res) => {
 
         let profileImage = req.body.profileImage || null; 
 
-        if(req.file){
-            profileImage = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
-        }
+        if (req.file) {
+            
+            const result = await cloudinary.uploader.upload(req.file.path, {
+              folder: "uploads", 
+            });
+          
+            profileImage = result.secure_url; 
+          }
 
         // check if email exists
         const emailExists = await User.findOne({email});
