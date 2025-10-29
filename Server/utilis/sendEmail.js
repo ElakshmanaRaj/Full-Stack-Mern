@@ -1,19 +1,23 @@
-const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
+const sgMail =  require("@sendgrid/mail")
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendMail = async (to, subject, text) => {
-  try {
-    await resend.emails.send({
-      from: 'ShopNest <onboarding@resend.dev>',
-      to,
-      subject,
-      text,
-    });
-    console.log("Email sent successfully via Resend!");
-  } catch (error) {
-    console.error("Error sending email:", error.message);
-  }
-};
+const sendMail = async (to, templateId, dynamicData) => {
+    try {
+        const msg = {
+            to,
+            from: process.env.EMAIL_USER,
+            templateId,
+            dynamic_template_data: dynamicData,
+
+        }
+
+        await sgMail.send(msg);
+        
+    } catch (error) {
+        console.error('Error sending email:', error.response?.body || error.message);
+    }
+}
 
 module.exports = sendMail;
+

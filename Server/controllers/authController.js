@@ -52,11 +52,12 @@ const registerUser = async (req, res) => {
             otpExpiries: Date.now() + 15 * 60 * 1000
         });
 
-        await sendMail(
-            user.email,
-            "Verfiy your email - OTP",
-            `Your 6 digits OTP code for ${otp} verify your email to register, It will expires in 15 minutes`
-        )
+        const templateId = process.env.TEMPLATE_ID;
+
+        await sendMail(user.email, templateId,{
+            name: user.name,
+            otp : otp
+        })
 
         res.status(201).json({
             success: true,
