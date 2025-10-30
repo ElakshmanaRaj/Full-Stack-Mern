@@ -9,7 +9,7 @@ const adminRoutes = require("./routes/adminRoute");
 const categoryRoutes = require("./routes/categoryRoute");
 const productRoutes = require("./routes/productRoute");
 const orderRoutes = require("./routes/orderRoute");
-const path = require("path");
+
 
 
 const app = express();
@@ -19,12 +19,21 @@ app.use(express.json());
 
 
 // cors handler
+const allowedOrigins = [
+    "http://localhost:5173",  
+    "https://nestshopecom.netlify.app"    
+  ];
 app.use(cors({
-    origin:[
-        "https://nestshopecom.netlify.app",
-        "http://localhost:8000"
-    ]
-}));
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  }));
 
 // DB Connection
 connectDB();
