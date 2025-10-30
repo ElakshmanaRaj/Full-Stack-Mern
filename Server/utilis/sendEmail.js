@@ -13,6 +13,7 @@ const sendMail = async (to, templateId, dynamicData) => {
         }
 
         await sgMail.send(msg);
+        console.log("email send successfully");
         
     } catch (error) {
         console.error('Error sending email:', error.response?.body || error.message);
