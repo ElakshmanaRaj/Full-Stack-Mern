@@ -4,7 +4,7 @@ const axios = require("axios");
 const sendMail = async (to, subject, html) => {
 
   try {
-    
+
     const response = await axios.post("https://api.brevo.com/v3/smtp/email", {
       sender: {
         name: "Shopnest Ecommerce",
@@ -16,7 +16,7 @@ const sendMail = async (to, subject, html) => {
     },
   {
     headers:{
-      "api-key": process.env.SMTP_KEY,
+      "api-key": process.env.API_KEY,
       "Content-Type":"application/json",
     }
   });
