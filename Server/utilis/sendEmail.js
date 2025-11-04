@@ -6,16 +6,19 @@ const sendMail = async (to, subject, html) => {
     
     const transporter = nodemailer.createTransport({
       host: "smtp-relay.brevo.com",
-      port: 465,
-      secure: true,
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.SMTP_KEY,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Shopnest Ecommerce" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html, 
