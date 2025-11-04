@@ -218,11 +218,21 @@ const forgotPassword = async (req, res) => {
         user.otpExpiries = Date.now() + 15 * 60 * 1000;
         await user.save();
 
-        await sendMail(
-            user.email,
-            "Password Reset OTP",
-            `Your 6 digits OTP code for reset password is ${otp}. It will expire in 15 minutes`
-        );
+       // Email content for Password Reset OTP 
+        const subject = "Password Reset OTP";
+        const html = `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+        <h2>Password Reset Request</h2>
+        <p>Hello ${user.name},</p>
+        <p>Your 6-digit OTP code for password reset is:</p>
+        <h3 style="color:#2D89EF;">${otp}</h3>
+        <p>This OTP will expire in <strong>15 minutes</strong>.</p>
+        <br/>
+        <p>Best regards,</p>
+        <p><strong>Shopnest Ecommerce</strong></p>
+        </div>`;
+        
+        // Send OTP email
+        await sendMail(user.email, subject, html);
 
         res.status(200).json({success: true, message:"OTP sent to your email for password reset"});
         
