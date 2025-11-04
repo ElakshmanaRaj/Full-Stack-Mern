@@ -1,33 +1,29 @@
-const nodemailer = require("nodemailer");
+
+const axios = require("axios");
 
 const sendMail = async (to, subject, html) => {
 
   try {
     
-    const transporter = nodemailer.createTransport({
-      host: "smtp-relay.brevo.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.SMTP_KEY,
+    const response = await axios.post("https://api.brevo.com/v3/smtp/email", {
+      sender: {
+        name: "Shopnest Ecommerce",
+        email: process.env.EMAIL_USER, 
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
-    const mailOptions = {
-      from: `"Shopnest Ecommerce" <${process.env.EMAIL_USER}>`,
-      to,
+      to: [{ email: to }],
       subject,
-      html, 
-    };
+      htmlContent: html,
+    },
+  {
+    headers:{
+      "api-key": process.env.SMTP_KEY,
+      "Content-Type":"application/json",
+    }
+  });
 
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully!");
+  console.log("Email sent successfully:", response.data);
   } catch (error) {
-    console.error("Error sending email:", error.message);
+    console.error("Error sending email:", error.message ||  error.response?.data);
   }
 };
 
