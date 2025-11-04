@@ -52,12 +52,18 @@ const registerUser = async (req, res) => {
             otpExpiries: Date.now() + 15 * 60 * 1000
         });
 
-        const templateId = process.env.TEMPLATE_ID;
+          // Send OTP email
+           const subject = "Verify Your Email - OTP Verification";
+           const html = `
+           <div style="font-family: Arial, sans-serif; padding: 20px; border-radius: 10px; background: #f8f9fa;">
+           <h2 style="color: #333;">Hi ${user.name},</h2>
+           <p>Thank you for registering. Please use the following OTP to verify your email:</p>
+           <h3 style="color: #007bff;">${otp}</h3>
+           <p>This OTP will expire in <b>15 minutes</b>.</p>
+           <p style="margin-top: 20px;">Best regards,<br><b>ShopNest Ecommerce</b></p>
+           </div>`;
 
-        await sendMail(user.email, templateId,{
-            name: user.name,
-            otp : otp
-        })
+           await sendMail(user.email, subject, html);
 
         res.status(201).json({
             success: true,
