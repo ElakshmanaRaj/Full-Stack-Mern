@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LogIn from './pages/Auth/LogIn';
 import SignUp from './pages/Auth/SignUp';
@@ -24,10 +24,21 @@ import ForgotPasswordOTP from './pages/Auth/ForgotPasswordOTP';
 import ResetPassword from './pages/Auth/ResetPassword';
 import UserOrder from './pages/UserOrder';
 import Profile from './pages/Auth/Profile';
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
+
+useEffect(()=>{ 
+  const handleRightClick = (e) => {
+    e.preventDefault(); 
+    toast.warning("Right click disabled!",{
+      className:"custom-toast",
+    });
+  };
+  document.addEventListener("contextmenu", handleRightClick);
+},[]);
+
   return (
    <>
    <AdminProvider>
